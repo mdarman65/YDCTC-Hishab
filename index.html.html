@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://lh3.googleusercontent.com/d/1a3f04dYhMFGasNCSOdIHQWizVQyiINdS">
+  <title>যুব উন্নয়ন কম্পিউটার প্রশিক্ষণ কেন্দ্র - ERP পোর্টাল</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- হেডলাইন বাংলা, কালপুরুষ ও জেদিরা ফন্ট -->
+  <link href="https://fonts.maateen.me/headline-bangla/font.css" rel="stylesheet">
+  <link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/jedira" rel="stylesheet">
+
+  <!-- আলাদা style.css ফাইল <head>-এর ভেতরে যুক্ত করা হলো -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <div id="sync-badge">⏳ Supabase ডাটাবেসের সাথে সংযুক্ত হচ্ছে...</div>
+
+  <div class="motion-bg">
+    <div class="float-cube navy"></div><div class="float-cube"></div>
+    <div class="float-cube"></div><div class="float-cube navy"></div>
+    <div class="float-ring"></div><div class="float-ring"></div>
+  </div>
+
+  <div class="app-container">
+
+    <header class="hero-header-3d">
+      <div class="brand-left">
+        <div class="logo-3d-frame">
+          <img src="https://lh3.googleusercontent.com/d/1a3f04dYhMFGasNCSOdIHQWizVQyiINdS" alt="YDCTC Logo" crossorigin="anonymous">
+        </div>
+        <div class="brand-texts">
+          <h1>যুব উন্নয়ন কম্পিউটার প্রশিক্ষণ কেন্দ্র</h1>
+          <p>লোহাগাড়া শাখা • হাজী নজীর আহমদ (সওঃ) মার্কেট, ২য় তলা, পদুয়া বাজার</p>
+        </div>
+      </div>
+
+      <div class="comp-mouse-3d-widget">
+        <svg class="floating-pc-svg" width="54" height="50" viewBox="0 0 64 60" fill="none">
+          <rect x="6" y="6" width="52" height="36" rx="6" fill="#0B1E40" stroke="#009EC3" stroke-width="3"/>
+          <rect x="11" y="11" width="42" height="26" rx="3" fill="url(#pcScreenGrad)"/>
+          <path d="M26 42L22 52H42L38 42H26Z" fill="#0B1E40"/>
+          <rect x="18" y="51" width="28" height="4" rx="2" fill="#009EC3"/>
+          <path d="M18 28L25 21L31 26L44 15" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="pcScreenGrad" x1="11" y1="11" x2="53" y2="37" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#009EC3"/><stop offset="1" stop-color="#0B1E40"/>
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <svg class="ai-chip" width="46" height="46" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <g class="trace" stroke="#0b84c6" stroke-width="2" stroke-linecap="round"><path d="M14 4v8M24 4v8M34 4v8M14 36v8M24 36v8M34 36v8M4 14h8M4 24h8M4 34h8M36 14h8M36 24h8M36 34h8"/></g>
+          <rect x="10" y="10" width="28" height="28" rx="6" fill="#0a1b33" stroke="#0b84c6" stroke-width="2"/>
+          <rect class="core" x="16" y="16" width="16" height="16" rx="3" fill="#0b84c6"/>
+          <text x="24" y="28" text-anchor="middle" font-family="Jedira, sans-serif" font-size="9" fill="#fff">AI</text>
+          <circle cx="36" cy="12" r="2" fill="#f2a900"/>
+        </svg>
+
+        <div class="header-contact-box">
+          <div class="header-phone-lg">📞 01952-514904</div>
+          <div class="en-font header-erp-tag">YDCTC ERP</div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="nav-bar-3d">
+      <div class="nav-item-3d active" onclick="switchView('pane-forms', this)">➕ আয়, ব্যয় ও ব্যাংক জমা</div>
+      <div class="nav-item-3d" onclick="switchView('pane-ledger', this)">📒 মাসিক খাতা ও ব্যালেন্স</div>
+      <div class="nav-item-3d" onclick="switchView('pane-due', this)">📨 বকেয়া ও পে-অর্ডার</div>
+      <div class="nav-item-3d" onclick="switchView('pane-dash', this)">📊 ড্যাশবোর্ড ও ইজা</div>
+    </nav>
+
+    <section id="pane-forms" class="tab-pane active">
+      <div class="forms-grid-3d">
+        <div class="glass-panel-3d" style="border-top: 5px solid #0878b5;">
+          <h3 class="panel-header">➕ শিক্ষার্থী ও অন্যান্য আয়</h3>
+          <form onsubmit="submitIncome(event)">
+            <div class="input-group">
+              <label>ফরম নং / আইডি:</label>
+              <input type="text" id="f-id" placeholder="যেমন: 1148" onblur="autoLookupStudent()" required>
+            </div>
+            <div id="student-status-hint" style="font-size:13.5px; color:#0878b5; font-weight:700; margin-bottom:8px;"></div>
+            <div class="input-group"><label>শিক্ষার্থীর নাম / খাত:</label><input type="text" id="f-name" placeholder="নাম লিখুন" required></div>
+            <div class="input-group"><label>মোবাইল নম্বর (০১XXXXXXXXX):</label><input type="text" id="f-mob" placeholder="018XXXXXXXX"></div>
+            <div class="input-group">
+              <label>ফি এর ক্যাটাগরি:</label>
+              <select id="f-cat">
+                <option value="কোর্স ফি">কোর্স ফি</option>
+                <option value="রেজিঃ ফি">রেজিঃ ফি</option>
+                <option value="সার্টিফিকেট">সার্টিফিকেট ফি</option>
+                <option value="শিট বিক্রয়">শিট বিক্রয়</option>
+                <option value="অন্যান্য">অন্যান্য</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label>পেমেন্ট মাধ্যম:</label>
+              <select id="f-mode">
+                <option value="নগদ ক্যাশ">নগদ ক্যাশ</option>
+                <option value="বিকাশ / নগদ">বিকাশ / নগদ</option>
+                <option value="ব্যাংক ট্রান্সফার">ব্যাংক ট্রান্সফার</option>
+              </select>
+            </div>
+            <div class="input-group"><label>জমাকৃত টাকা (৳):</label><input type="number" id="f-amt" placeholder="2000" min="1" required></div>
+            <div class="input-group"><label>বকেয়া কিস্তি (১ম কিস্তির সময় থাকলে):</label><input type="number" id="f-due" value="0" min="0"></div>
+            <button type="submit" class="btn-3d btn-cyan-3d">সাবমিট ও রিসিট দেখুন</button>
+          </form>
+        </div>
+
+        <div class="glass-panel-3d" style="border-top: 5px solid #dc2626;">
+          <h3 class="panel-header">➖ বিবিধ অফিস ব্যয়</h3>
+          <form onsubmit="submitExpense(event)">
+            <div class="input-group"><label>তারিখ:</label><input type="date" id="e-date" required></div>
+            <div class="input-group"><label>ব্যয়ের বিবরণ:</label><input type="text" id="e-desc" placeholder="যেমন: বিদ্যুৎ বিল / নাস্তা" required></div>
+            <div class="input-group"><label>খরচের পরিমাণ (৳):</label><input type="number" id="e-amt" placeholder="500" min="1" required></div>
+            <button type="submit" class="btn-3d btn-red-3d">ব্যয় সংরক্ষণ করুন</button>
+          </form>
+        </div>
+
+        <div class="glass-panel-3d" style="border-top: 5px solid #0a1b33;">
+          <h3 class="panel-header">🏦 অফিস জমা ও ব্যাংক ট্রান্সফার</h3>
+          <form onsubmit="submitDeposit(event)">
+            <div class="input-group"><label>তারিখ:</label><input type="date" id="d-date" required></div>
+            <div class="input-group">
+              <label>জমার মাধ্যম:</label>
+              <select id="d-type">
+                <option value="অফিসে ফাইনাল জমা">অফিসে ফাইনাল জমা</option>
+                <option value="ব্যাংক অ্যাকাউন্ট (ONE Bank / Pubali)">ব্যাংক অ্যাকাউন্ট ডিপোজিট</option>
+              </select>
+            </div>
+            <div class="input-group"><label>স্লিপ / ব্যাংক রেফারেন্স নং:</label><input type="text" id="d-ref" placeholder="যেমন: Slip-109" required></div>
+            <div class="input-group"><label>জমাকৃত টাকা (৳):</label><input type="number" id="d-amt" placeholder="10000" min="1" required></div>
+            <button type="submit" class="btn-3d btn-navy-3d">ফাইনাল জমা এন্ট্রি করুন</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="pane-ledger" class="tab-pane">
+      <div class="glass-panel-3d">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+          <div>
+            <h3 style="margin:0; color:var(--navy); font-size:20px;">📒 মাসিক আয়-ব্যয় খাতা ও চূড়ান্ত ব্যালেন্স শিট</h3>
+            <small style="color:var(--text-sub);">১ তারিখ থেকে ৩০/৩১ তারিখ পর্যন্ত পূর্ণাঙ্গ হিসাব ও পরবর্তী মাসের ইজা</small>
+          </div>
+          <button onclick="window.print()" class="btn-sm-3d no-print" style="background:var(--navy); padding:10px 18px; font-size:14px;">🖨️ A4 মাসিক খাতা প্রিন্ট</button>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1.35fr 1fr; gap:18px;">
+          <div>
+            <div style="font-weight:800; color:#059669; margin-bottom:6px;">আয়ের বিবরণ (কোর্স, রেজিঃ ও অন্যান্য)</div>
+            <div class="table-wrapper">
+              <table>
+                <thead><tr><th>ক্রমিক</th><th>ফরম নং</th><th>নাম</th><th>কোর্স ফি</th><th>রেজিঃ</th><th>অন্যান্য</th></tr></thead>
+                <tbody id="m-in-body"></tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div style="font-weight:800; color:#dc2626; margin-bottom:6px;">বিবিধ খরচ ও অফিস/ব্যাংক জমা</div>
+            <div class="table-wrapper">
+              <table>
+                <thead><tr><th>তারিখ</th><th>ভাউচার / স্লিপ</th><th>বিবরণ / মাধ্যম</th><th>টাকা</th></tr></thead>
+                <tbody id="m-ex-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-card-3d">
+          <div class="s-row"><span>চলতি মাসের মোট আয়:</span><strong id="s-inc">0 ৳</strong></div>
+          <div class="s-row"><span>গত মাসের ইজা জমা (+):</span><strong id="s-ija">0 ৳</strong></div>
+          <div class="s-row mid"><span>সর্বমোট তহবিল:</span><strong id="s-fund">0 ৳</strong></div>
+          <div class="s-row"><span>চলতি মাসের বিবিধ ব্যয় (-):</span><strong id="s-exp" style="color:#dc2626;">0 ৳</strong></div>
+          <div class="s-row"><span>অফিস ও ব্যাংকে ফাইনাল জমা (-):</span><strong id="s-dep" style="color:#d97706;">0 ৳</strong></div>
+          <div class="s-row final"><span>বর্তমান ক্যাশ (পরবর্তী মাসের ইজা):</span><strong id="s-cash">0 ৳</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pane-due" class="tab-pane">
+      <div class="glass-panel-3d">
+        <h3 class="panel-header">⚠️ বকেয়া কিস্তি ও ৩০ দিন অতিক্রান্ত পে-অর্ডার তালিকা</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>আইডি</th><th>শিক্ষার্থীর নাম</th><th>১ম কিস্তির তারিখ</th><th>পরিশোধিত</th><th>বকেয়া</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
+            <tbody id="due-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="pane-dash" class="tab-pane">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:16px; background:rgba(255,255,255,0.85); padding:10px 18px; border-radius:14px;">
+        <strong style="color:var(--navy); font-size:16px;">📅 হিসাবের মাস নির্বাচন করুন:</strong>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <input type="month" id="global-month" onchange="fetchPortalData()" style="padding:8px 14px; border-radius:10px; border:2px solid var(--cyan); font-weight:700; color:var(--navy);">
+          <button onclick="fetchPortalData()" class="btn-sm-3d" style="background:var(--navy); padding:9px 14px;">🔄 রিফ্রেশ</button>
+        </div>
+      </div>
+
+      <div class="kpi-3d-grid">
+        <div class="stat-card-3d">
+          <div class="stat-label">গত মাসের ইজা জমা</div>
+          <div class="stat-val" id="v-ija">0 ৳</div>
+        </div>
+        <div class="stat-card-3d">
+          <div class="stat-label">চলতি মাসের মোট আয়</div>
+          <div class="stat-val" style="color:#059669;" id="v-inc">0 ৳</div>
+        </div>
+        <div class="stat-card-3d">
+          <div class="stat-label">সর্বমোট তহবিল (আয় + ইজা)</div>
+          <div class="stat-val" style="color:#009ec3;" id="v-fund">0 ৳</div>
+        </div>
+        <div class="stat-card-3d">
+          <div class="stat-label">চলতি মাসের বিবিধ ব্যয়</div>
+          <div class="stat-val" style="color:#dc2626;" id="v-exp">0 ৳</div>
+        </div>
+        <div class="stat-card-3d">
+          <div class="stat-label">অফিস ও ব্যাংকে ফাইনাল জমা</div>
+          <div class="stat-val" style="color:#d97706;" id="v-dep">0 ৳</div>
+        </div>
+        <div class="stat-card-3d highlight-3d">
+          <div class="stat-label">বর্তমান ক্যাশ (পরবর্তী মাসের ইজা)</div>
+          <div class="stat-val" id="v-cash">0 ৳</div>
+        </div>
+      </div>
+
+      <div class="alltime-bar">
+        <div class="at-item"><span>সর্বমোট আয়:</span><strong id="at-inc">0 ৳</strong></div>
+        <div class="at-item"><span>সর্বমোট অফিস ব্যয়:</span><strong id="at-exp">0 ৳</strong></div>
+        <div class="at-item"><span>সর্বমোট ব্যাংক ডিপোজিট:</span><strong id="at-bank">0 ৳</strong></div>
+        <div class="at-item"><span>সর্বমোট হাতে ক্যাশ:</span><strong id="at-cash">0 ৳</strong></div>
+      </div>
+
+      <div class="glass-panel-3d">
+        <h3 class="panel-header">🕒 সাম্প্রতিক লেনদেন তালিকা</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>তারিখ</th><th>রেফারেন্স / আইডি</th><th>নাম / বিবরণ</th><th>ধরন</th><th>মাধ্যম</th><th>টাকা</th><th>রিসিট</th></tr></thead>
+            <tbody id="dash-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="doc-modal" class="modal-bg">
+    <div class="slip-paper" id="doc-paper-box">
+      <div class="slip-head">
+        <img src="https://lh3.googleusercontent.com/d/1a3f04dYhMFGasNCSOdIHQWizVQyiINdS" alt="Logo" style="width:58px; height:58px; object-fit:contain;">
+        <h3>যুব উন্নয়ন কম্পিউটার প্রশিক্ষণ কেন্দ্র</h3>
+        <p>লোহাগাড়া শাখা • মোবাইল: 01952-514904</p>
+      </div>
+      <div id="doc-content"></div>
+      <div class="slip-sigs">
+        <div>শিক্ষার্থীর স্বাক্ষর</div>
+        <div>পরিচালক</div>
+      </div>
+      <div class="no-print" style="display:flex; gap:10px; margin-top:22px;">
+        <button onclick="saveDocPDF()" class="btn-sm-3d" style="flex:1; background:#059669; padding:11px; font-size:14px;">📥 PDF ডাউনলোড</button>
+        <button onclick="printDocWindow()" class="btn-sm-3d" style="flex:1; background:#0878b5; padding:11px; font-size:14px;">🖨️ প্রিন্ট</button>
+        <button onclick="closeDocModal()" class="btn-sm-3d" style="flex:1; background:#64748b; padding:11px; font-size:14px;">বন্ধ করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://roglllyvovltcfrjgsro.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_GBoIrwpxuGogDYnqwifTwQ_IA8yl16P";
+    const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    window.onload = function() {
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      document.getElementById('global-month').value = `${yyyy}-${mm}`;
+      document.getElementById('e-date').valueAsDate = now;
+      document.getElementById('d-date').valueAsDate = now;
+      fetchPortalData();
+    };
+
+    function toggleBadge(show) {
+      document.getElementById('sync-badge').style.display = show ? 'block' : 'none';
+    }
+
+    function switchView(id, btn) {
+      document.querySelectorAll('.tab-pane').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-item-3d').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function qs(v) {
+      return String(v == null ? '' : v).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, ' ');
+    }
+
+    function waNum(m) {
+      let d = String(m || '').replace(/\D/g, '');
+      if (d.startsWith('880')) return d;
+      if (d.startsWith('0')) return '88' + d;
+      if (d.length === 10) return '880' + d;
+      return d;
+    }
+
+    function waOpen(mobile, text) {
+      if (!mobile) mobile = prompt('হোয়াটসঅ্যাপ নম্বর দিন (যেমন 01712345678):') || '';
+      const n = waNum(mobile);
+      if (n.length < 13) { alert('মোবাইল নম্বর সঠিক নয়।'); return; }
+      window.open('https://wa.me/' + n + '?text=' + encodeURIComponent(text), '_blank');
+    }
+
+    async function autoLookupStudent() {
+      const sId = document.getElementById('f-id').value.trim();
+      if (!sId) return;
+      const { data } = await sbClient.from('student_profiles').select('*').eq('student_id', sId).maybeSingle();
+      const hint = document.getElementById('student-status-hint');
+      if (data) {
+        document.getElementById('f-name').value = data.student_name || '';
+        if (data.mobile) document.getElementById('f-mob').value = data.mobile;
+        hint.innerText = `✅ পুরনো শিক্ষার্থী পাওয়া গেছে! মোট জমা: ${data.total_paid || 0} ৳ | বর্তমান বকেয়া: ${data.due_fee || 0} ৳`;
+      } else {
+        hint.innerText = "🆕 নতুন শিক্ষার্থী এন্ট্রি";
+      }
+    }
+
+    async function fetchPortalData() {
+      toggleBadge(true);
+      try {
+        const currentMonth = document.getElementById('global-month').value || new Date().toISOString().slice(0, 7);
+        const todayStr = new Date().toISOString().slice(0, 10);
+
+        const [incRes, expRes, trRes, profRes] = await Promise.all([
+          sbClient.from('income_ledger').select('*').order('id', { ascending: true }),
+          sbClient.from('expense_ledger').select('*').order('id', { ascending: true }),
+          sbClient.from('transfers_ija').select('*').order('id', { ascending: true }),
+          sbClient.from('student_profiles').select('*').order('id', { ascending: true })
+        ]);
+
+        const incRows = incRes.data || [];
+        const expRows = expRes.data || [];
+        const trRows = trRes.data || [];
+        const profRows = profRes.data || [];
+
+        const mobileMap = {};
+        profRows.forEach(p => {
+          if (p.student_id) mobileMap[String(p.student_id).trim()] = String(p.mobile || '').trim();
+        });
+
+        let prevIncome = 0, prevExpense = 0, prevDeposit = 0;
+        let curIncome = 0, curExpense = 0, curDeposit = 0;
+        let allTimeIncome = 0, allTimeExpense = 0, allTimeDeposit = 0, allTimeBank = 0;
+        const monthIncomes = [], monthExpenses = [], monthDeposits = [], recentLogs = [];
+
+        incRows.forEach(r => {
+          const m = String(r.month_year || '').slice(0, 7);
+          const tot = Number(r.total_paid_now || 0);
+          const dStr = String(r.tx_datetime || '').slice(0, 10);
+          const recId = String(r.form_no_id || '').trim();
+          allTimeIncome += tot;
+
+          const item = {
+            date: dStr, id: recId, name: String(r.student_name || ''),
+            course: Number(r.course_fee || 0), reg: Number(r.reg_fee || 0),
+            other: Number(r.others_fee || 0), mode: String(r.pay_mode || ''),
+            mobile: mobileMap[recId] || '', kind: 'আয়', total: tot, sign: '+'
+          };
+          recentLogs.push(item);
+
+          if (m && m < currentMonth) prevIncome += tot;
+          else if (m === currentMonth) { curIncome += tot; monthIncomes.push(item); }
+        });
+
+        expRows.forEach(e => {
+          const m = String(e.month_year || '').slice(0, 7);
+          const amt = Number(e.amount || 0);
+          const dStr = String(e.tx_date || '').slice(0, 10);
+          const vch = String(e.voucher_no || 'VCH');
+          allTimeExpense += amt;
+
+          recentLogs.push({
+            date: dStr, id: vch, name: String(e.expense_sector || ''),
+            kind: 'ব্যয়', mode: 'নগদ ক্যাশ', mobile: '', total: amt, sign: '-'
+          });
+
+          if (m && m < currentMonth) prevExpense += amt;
+          else if (m === currentMonth) {
+            curExpense += amt;
+            monthExpenses.push({ date: dStr, voucher: vch, sector: String(e.expense_sector || ''), amount: amt });
+          }
+        });
+
+        trRows.forEach(t => {
+          const m = String(t.month_year || '').slice(0, 7);
+          const amt = Number(t.amount || 0);
+          const dStr = String(t.tx_date || '').slice(0, 10);
+          const tType = String(t.transfer_type || '');
+          const refNo = String(t.bank_or_ref_no || 'N/A');
+          allTimeDeposit += amt;
+          if (tType.includes('ব্যাংক') || tType.toLowerCase().includes('bank')) allTimeBank += amt;
+
+          recentLogs.push({
+            date: dStr, id: refNo, name: tType,
+            kind: 'ফাইনাল জমা', mode: refNo, mobile: '', total: amt, sign: '-'
+          });
+
+          if (m && m < currentMonth) prevDeposit += amt;
+          else if (m === currentMonth) {
+            curDeposit += amt;
+            monthDeposits.push({ date: dStr, type: tType, ref: refNo, amount: amt });
+          }
+        });
+
+        const prevIja = Math.max(0, prevIncome - prevExpense - prevDeposit);
+        const totalFund = prevIja + curIncome;
+        const cashInHand = totalFund - curExpense - curDeposit;
+        const allTimeCash = allTimeIncome - allTimeExpense - allTimeDeposit;
+
+        document.getElementById('v-ija').innerText = prevIja.toLocaleString() + ' ৳';
+        document.getElementById('v-inc').innerText = curIncome.toLocaleString() + ' ৳';
+        document.getElementById('v-fund').innerText = totalFund.toLocaleString() + ' ৳';
+        document.getElementById('v-exp').innerText = curExpense.toLocaleString() + ' ৳';
+        document.getElementById('v-dep').innerText = curDeposit.toLocaleString() + ' ৳';
+        document.getElementById('v-cash').innerText = cashInHand.toLocaleString() + ' ৳';
+
+        document.getElementById('at-inc').innerText = allTimeIncome.toLocaleString() + ' ৳';
+        document.getElementById('at-exp').innerText = allTimeExpense.toLocaleString() + ' ৳';
+        document.getElementById('at-bank').innerText = allTimeBank.toLocaleString() + ' ৳';
+        document.getElementById('at-cash').innerText = allTimeCash.toLocaleString() + ' ৳';
+
+        document.getElementById('s-inc').innerText = curIncome.toLocaleString() + ' ৳';
+        document.getElementById('s-ija').innerText = prevIja.toLocaleString() + ' ৳';
+        document.getElementById('s-fund').innerText = totalFund.toLocaleString() + ' ৳';
+        document.getElementById('s-exp').innerText = curExpense.toLocaleString() + ' ৳';
+        document.getElementById('s-dep').innerText = curDeposit.toLocaleString() + ' ৳';
+        document.getElementById('s-cash').innerText = cashInHand.toLocaleString() + ' ৳';
+
+        const mIn = document.getElementById('m-in-body');
+        mIn.innerHTML = monthIncomes.length === 0 ? '<tr><td colspan="6">এই মাসে কোনো আয় তথ্য নেই</td></tr>' : '';
+        monthIncomes.forEach((r, idx) => {
+          mIn.innerHTML += `<tr><td>${idx+1}</td><td>${r.id}</td><td>${r.name}</td><td>${r.course||'-'}</td><td>${r.reg||'-'}</td><td>${r.other||'-'}</td></tr>`;
+        });
+
+        const mEx = document.getElementById('m-ex-body');
+        mEx.innerHTML = (monthExpenses.length === 0 && monthDeposits.length === 0) ? '<tr><td colspan="4">এই মাসে কোনো ব্যয় বা জমা নেই</td></tr>' : '';
+        monthExpenses.forEach(e => {
+          mEx.innerHTML += `<tr><td>${e.date}</td><td><span class="vch-tag">${e.voucher}</span></td><td>${e.sector}</td><td style="color:#dc2626; font-weight:700;">${e.amount} ৳</td></tr>`;
+        });
+        monthDeposits.forEach(d => {
+          mEx.innerHTML += `<tr><td>${d.date}</td><td><span class="vch-tag" style="background:#fef3c7; color:#92400e;">${d.ref}</span></td><td style="color:#d97706; font-weight:700;">🏦 ${d.type}</td><td style="color:#d97706; font-weight:700;">${d.amount} ৳</td></tr>`;
+        });
+
+        recentLogs.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+        const dBody = document.getElementById('dash-table-body');
+        dBody.innerHTML = recentLogs.length === 0 ? '<tr><td colspan="7">কোনো লেনদেন পাওয়া যায়নি</td></tr>' : '';
+        recentLogs.slice(0, 12).forEach(r => {
+          const amtColor = r.sign === '+' ? '#059669' : '#dc2626';
+          const rBtn = r.kind === 'আয়'
+            ? `<button class="btn-sm-3d" style="background:#0878b5;" onclick="showReceipt('${qs(r.date)}','${qs(r.id)}','${qs(r.name)}','ফি আদায়',${r.total},0,'${qs(r.mobile||"")}')">🧾 রিসিট</button>`
+            : '-';
+          dBody.innerHTML += `<tr><td>${r.date}</td><td><strong>${r.id}</strong></td><td>${r.name}</td><td>${r.kind}</td><td>${r.mode}</td>
+            <td style="color:${amtColor}; font-weight:800;">${r.sign}${r.total} ৳</td><td>${rBtn}</td></tr>`;
+        });
+
+        const dueList = [];
+        profRows.forEach(p => {
+          const dueFee = Number(p.due_fee || 0);
+          if (p.student_id && dueFee > 0) {
+            const fDateStr = String(p.first_pay_date || '').slice(0, 10);
+            const diffDays = Math.floor((new Date(todayStr) - new Date(fDateStr)) / (1000 * 60 * 60 * 24));
+            dueList.push({
+              id: String(p.student_id).trim(),
+              name: String(p.student_name || ''),
+              mobile: String(p.mobile || '').trim(),
+              firstDate: fDateStr,
+              paid: Number(p.total_paid || 0),
+              due: dueFee,
+              diffDays: diffDays,
+              isOverdue: (diffDays >= 30)
+            });
+          }
+        });
+
+        window._dues = dueList;
+        const dueBody = document.getElementById('due-table-body');
+        dueBody.innerHTML = dueList.length === 0 ? '<tr><td colspan="7">কোনো বকেয়া শিক্ষার্থী নেই</td></tr>' : '';
+        dueList.forEach((d, ix) => {
+          const stBadge = d.isOverdue
+            ? `<span style="background:#dc2626; color:#fff; padding:3px 8px; border-radius:6px; font-size:12px; font-weight:700;">⚠️ ${d.diffDays} দিন অতিক্রান্ত</span>`
+            : `<span style="background:#0284c7; color:#fff; padding:3px 8px; border-radius:6px; font-size:12px;">চলমান (${d.diffDays} দিন)</span>`;
+          const poBtn = d.isOverdue
+            ? `<button class="btn-sm-3d" style="background:#d97706;" onclick="showPayOrder('${qs(d.name)}','${qs(d.id)}','${qs(d.firstDate)}',${d.paid},${d.due},${ix})">📨 পে-অর্ডার স্লিপ</button> <button class="btn-sm-3d" style="background:#25d366;" onclick="waDueDirect(${ix})">💬 হোয়াটসঅ্যাপ</button>`
+            : '-';
+          dueBody.innerHTML += `<tr><td><strong>${d.id}</strong></td><td>${d.name}</td><td>${d.firstDate}</td><td>${d.paid} ৳</td><td style="color:#d97706; font-weight:800;">${d.due} ৳</td><td>${stBadge}</td><td>${poBtn}</td></tr>`;
+        });
+      } finally {
+        toggleBadge(false);
+      }
+    }
+
+    async function submitIncome(e) {
+      e.preventDefault();
+      toggleBadge(true);
+      try {
+        const sId = document.getElementById('f-id').value.trim();
+        const sName = document.getElementById('f-name').value.trim();
+        let mobile = document.getElementById('f-mob').value.trim();
+        const cat = document.getElementById('f-cat').value;
+        const payMode = document.getElementById('f-mode').value;
+        const amt = Math.round(Number(document.getElementById('f-amt').value || 0));
+        const inputDue = Math.max(0, Math.round(Number(document.getElementById('f-due').value || 0)));
+
+        const now = new Date();
+        const fDate = now.toISOString().replace('T', ' ').slice(0, 16);
+        const dStr = now.toISOString().slice(0, 10);
+        const monthYear = dStr.slice(0, 7);
+
+        const { data: existing } = await sbClient.from('student_profiles').select('*').eq('student_id', sId).maybeSingle();
+        if (existing && cat === 'কোর্স ফি' && Number(existing.due_fee || 0) > 0 && amt > Number(existing.due_fee)) {
+          alert(`বকেয়া ${existing.due_fee} ৳-এর চেয়ে বেশি কোর্স ফি নেওয়া যাবে না।`);
+          return;
+        }
+
+        const courseFee = (cat === 'কোর্স ফি') ? amt : 0;
+        const regFee = (cat === 'রেজিঃ ফি') ? amt : 0;
+        const othersFee = (cat !== 'কোর্স ফি' && cat !== 'রেজিঃ ফি') ? amt : 0;
+
+        await sbClient.from('income_ledger').insert([{
+          tx_datetime: fDate, month_year: monthYear, form_no_id: sId, student_name: sName,
+          course_fee: courseFee, reg_fee: regFee, others_fee: othersFee, pay_mode: payMode, total_paid_now: amt
+        }]);
+
+        let finalPaid = amt;
+        let finalDue = inputDue;
+        if (existing) {
+          if (!mobile) mobile = String(existing.mobile || '').trim();
+          const firstDate = String(existing.first_pay_date || dStr).slice(0, 10);
+          finalPaid = Number(existing.total_paid || 0) + amt;
+          finalDue = (cat === 'কোর্স ফি') ? Math.max(0, Number(existing.due_fee || 0) - amt) : Number(existing.due_fee || 0);
+          const poDate = finalDue > 0 ? new Date(new Date(firstDate).getTime() + 30 * 86400000).toISOString().slice(0, 10) : '';
+          await sbClient.from('student_profiles').update({
+            student_name: sName, mobile: mobile, total_course_fee: finalPaid + finalDue,
+            total_paid: finalPaid, due_fee: finalDue, pay_order_date: poDate
+          }).eq('student_id', sId);
+        } else {
+          const poDateNew = finalDue > 0 ? new Date(now.getTime() + 30 * 86400000).toISOString().slice(0, 10) : '';
+          await sbClient.from('student_profiles').insert([{
+            student_id: sId, student_name: sName, mobile: mobile, first_pay_date: dStr,
+            total_course_fee: finalPaid + finalDue, total_paid: finalPaid, due_fee: finalDue, pay_order_date: poDateNew
+          }]);
+        }
+
+        e.target.reset();
+        document.getElementById('student-status-hint').innerText = '';
+        await fetchPortalData();
+        showReceipt(fDate, sId, sName, cat, amt, finalDue, mobile);
+      } catch (err) {
+        alert('সেভ করতে সমস্যা হয়েছে: ' + err.message);
+      } finally {
+        toggleBadge(false);
+      }
+    }
+
+    async function submitExpense(e) {
+      e.preventDefault();
+      toggleBadge(true);
+      try {
+        const dStr = document.getElementById('e-date').value;
+        const sector = document.getElementById('e-desc').value.trim();
+        const amt = Math.round(Number(document.getElementById('e-amt').value || 0));
+        const monthYear = dStr.slice(0, 7);
+        const { count } = await sbClient.from('expense_ledger').select('*', { count: 'exact', head: true });
+        const vch = 'VCH-' + ('00' + ((count || 0) + 1)).slice(-3);
+
+        await sbClient.from('expense_ledger').insert([{
+          tx_date: dStr, month_year: monthYear, voucher_no: vch, expense_sector: sector, amount: amt
+        }]);
+        e.target.reset();
+        document.getElementById('e-date').valueAsDate = new Date();
+        await fetchPortalData();
+        alert('বিবিধ অফিস ব্যয় সংরক্ষিত হয়েছে! ভাউচার: ' + vch);
+      } finally {
+        toggleBadge(false);
+      }
+    }
+
+    async function submitDeposit(e) {
+      e.preventDefault();
+      toggleBadge(true);
+      try {
+        const dStr = document.getElementById('d-date').value;
+        const depositType = document.getElementById('d-type').value;
+        const refNo = document.getElementById('d-ref').value.trim();
+        const amt = Math.round(Number(document.getElementById('d-amt').value || 0));
+        const monthYear = dStr.slice(0, 7);
+
+        await sbClient.from('transfers_ija').insert([{
+          tx_date: dStr, month_year: monthYear, transfer_type: depositType, bank_or_ref_no: refNo, amount: amt
+        }]);
+        e.target.reset();
+        document.getElementById('d-date').valueAsDate = new Date();
+        await fetchPortalData();
+        alert('অফিস/ব্যাংক ফাইনাল জমা রেকর্ড হয়েছে!');
+      } finally {
+        toggleBadge(false);
+      }
+    }
+
+    function showReceipt(date, id, name, cat, amt, due, mobile) {
+      const msgText =
+        'আসসালামু আলাইকুম, ' + name + '।\n' +
+        '✅ আপনার ফি জমা সফল হয়েছে।\n' +
+        'আইডি: ' + id + '\n' +
+        'খাত: ' + cat + '\n' +
+        'জমা: ' + amt + ' টাকা\n' +
+        'বকেয়া: ' + due + ' টাকা\n' +
+        'তারিখ: ' + date + '\n' +
+        '— যুব উন্নয়ন কম্পিউটার প্রশিক্ষণ কেন্দ্র, লোহাগাড়া শাখা (01952-514904)';
+
+      window._wa = { mobile: mobile || '', text: msgText };
+
+      document.getElementById('doc-content').innerHTML = `
+        <div style="text-align:center; color:#059669; font-weight:800; font-size:18px; margin-bottom:12px;">✅ পেমেন্ট সফলভাবে সম্পন্ন হয়েছে!</div>
+        <div class="slip-box">
+          <div class="slip-line"><span>তারিখ ও সময়:</span><strong>${date}</strong></div>
+          <div class="slip-line"><span>ফরম / আইডি নং:</span><strong>${id}</strong></div>
+          <div class="slip-line"><span>শিক্ষার্থীর নাম:</span><strong>${name}</strong></div>
+          <div class="slip-line"><span>ফি এর বিবরণ:</span><strong>${cat}</strong></div>
+          <div class="slip-line"><span>আদায়কৃত অর্থ:</span><strong style="color:#0878b5; font-size:17px;">${amt} ৳</strong></div>
+          <div class="slip-line"><span>অবশিষ্ট বকেয়া:</span><strong style="color:#dc2626;">${due} ৳</strong></div>
+        </div>
+        <div id="wa-box" class="no-print" style="margin-top:12px;">
+          <button class="btn-sm-3d" style="background:#25d366; width:100%; padding:12px;" onclick="waOpen(_wa.mobile, _wa.text)">💬 হোয়াটসঅ্যাপে রসিদ পাঠান</button>
+        </div>`;
+      document.getElementById('doc-modal').style.display = 'flex';
+    }
+
+    function showPayOrder(name, id, firstDate, paid, due, ix) {
+      const dObj = (window._dues && typeof ix === 'number') ? window._dues[ix] : null;
+      const mob = dObj ? dObj.mobile : '';
+      const msgText =
+        'আসসালামু আলাইকুম, ' + name + ' (আইডি ' + id + ')।\n' +
+        'যুব উন্নয়ন কম্পিউটার প্রশিক্ষণ কেন্দ্র, লোহাগাড়া থেকে জানানো যাচ্ছে—আপনার ১ম কিস্তির (' + firstDate + ') পর ৩০ দিন পার হয়েছে। বকেয়া ' + due + ' টাকা পরিশোধের অনুরোধ রইল।\n' +
+        'ধন্যবাদ। মোবাইল: 01952-514904';
+
+      window._wa = { mobile: mob, text: msgText };
+
+      document.getElementById('doc-content').innerHTML = `
+        <div style="background:#fef3c7; color:#92400e; padding:8px; text-align:center; font-weight:800; border-radius:8px; margin-bottom:12px; border:1px dashed #d97706;">
+          ⚠️ ২য় কিস্তি পরিশোধের নোটিশ ও পে-অর্ডার স্লিপ
+        </div>
+        <p style="font-size:15px; line-height:1.7;">বরাবর, <strong>${name}</strong> (আইডি: <strong>${id}</strong>),<br>
+        আপনার ১ম কিস্তি প্রদানের (${firstDate}) পর ৩০ দিন অতিবাহিত হয়েছে। প্রতিষ্ঠানের পরিচালকের নির্দেশক্রমে আগামী ৭ কার্যদিবসের মধ্যে বকেয়া ২য় কিস্তির টাকা জমা দেওয়ার জন্য অনুরোধ করা হলো।</p>
+        <div class="slip-box">
+          <div class="slip-line"><span>ইতোমধ্যে পরিশোধিত:</span><strong>${paid} ৳</strong></div>
+          <div class="slip-line"><span>বকেয়া ২য় কিস্তি:</span><strong style="color:#d97706; font-size:17px;">${due} ৳</strong></div>
+        </div>
+        <div id="wa-box" class="no-print" style="margin-top:12px;">
+          <button class="btn-sm-3d" style="background:#25d366; width:100%; padding:12px;" onclick="waOpen(_wa.mobile, _wa.text)">💬 হোয়াটসঅ্যাপে তাগাদা পাঠান</button>
+        </div>`;
+      document.getElementById('doc-modal').style.display = 'flex';
+    }
+
+    function waDueDirect(ix) {
+      const d = window._dues[ix];
+      waOpen(d.mobile, 'আসসালামু আলাইকুম, ' + d.name + ' (আইডি ' + d.id + ')।\nযুব উন্নয়ন কম্পিউটার প্রশিক্ষণ কেন্দ্র, লোহাগাড়া থেকে জানানো যাচ্ছে—আপনার ১ম কিস্তির (' + d.firstDate + ') পর ৩০ দিন পার হয়েছে। বকেয়া ' + d.due + ' টাকা পরিশোধের অনুরোধ রইল।\nধন্যবাদ। মোবাইল: 01952-514904');
+    }
+
+    function closeDocModal() { document.getElementById('doc-modal').style.display = 'none'; }
+    function printDocWindow() { document.body.classList.add('print-modal'); window.print(); document.body.classList.remove('print-modal'); }
+    function saveDocPDF() {
+      const el = document.getElementById('doc-paper-box');
+      const btns = el.querySelector('.no-print');
+      btns.style.display = 'none'; const wb = document.getElementById('wa-box'); if (wb) wb.style.display = 'none';
+      html2pdf().set({ margin: 0.3, filename: 'YDCTC_Slip.pdf', html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'in', format: 'a4' } })
+        .from(el).save().then(() => { btns.style.display = 'flex'; if (wb) wb.style.display = ''; });
+    }
+  </script>
+
+  <script>
+    (function () {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches || matchMedia('(hover: none)').matches) return;
+      let cur = null;
+      const hero = document.querySelector('.hero-header-3d');
+      document.addEventListener('pointermove', function (e) {
+        const c = e.target.closest && e.target.closest('.stat-card-3d, .logo-3d-frame');
+        if (cur && cur !== c) { cur.style.transform = ''; cur = null; }
+        if (c) {
+          const r = c.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width - .5;
+          const y = (e.clientY - r.top) / r.height - .5;
+          c.style.transform = 'perspective(750px) rotateX(' + (-y * 8) + 'deg) rotateY(' + (x * 10) + 'deg) translateZ(8px)';
+          cur = c;
+        }
+        if (hero) {
+          const hr = hero.getBoundingClientRect();
+          if (e.clientY >= hr.top - 40 && e.clientY <= hr.bottom + 40) {
+            const hx = (e.clientX - hr.left) / hr.width - .5;
+            const hy = (e.clientY - hr.top) / hr.height - .5;
+            hero.style.transform = 'perspective(1400px) rotateX(' + (-hy * 2) + 'deg) rotateY(' + (hx * 2.5) + 'deg)';
+          } else {
+            hero.style.transform = '';
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
